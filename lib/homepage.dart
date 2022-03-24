@@ -12,27 +12,25 @@ class _HomePageState extends State<HomePage> {
   TextEditingController inputSecond = TextEditingController();
 
   List<int> finalResult = [];
-  int f1=0 , f2=1, f3=1;
-  double result =0;
+  int f1 = 0, f2 = 1;
+  int f3 = 0;
+  int result = 0;
 
-  String? fibonacciSeries() {
-    int firstRange = int.parse(inputFirst.text.toString());
-    int lastRange = int.parse(inputSecond.text.toString());
-
-
-    if (firstRange < lastRange) {
-      while(f1 <= lastRange){
-        if(f1 >= firstRange){
+   fibonacciSeries(int low, int high) {
+    if (low < high) {
+      while (f1 <= high) {
+        if (f1 >= low) {
           result++;
-          f1 = f2;
-          f2 = f3;
-          f3 = f1 + f2;
         }
-      }throw result;
-    } else {
-      ///todo show a error message.eg. range not valid
+        f1 = f2;
+        f2 = f3;
+        f3 = f1 + f2;
+
+      }
+      return result;
     }
-  }
+
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +65,14 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 child: const Text('Check'),
                 onPressed: () {
-                  fibonacciSeries();
+                  fibonacciSeries(
+                      int.parse(inputFirst.text), int.parse(inputSecond.text));
                   showDialog(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
                           title: const Text('Fibonacci Series'),
-                          content: Text(finalResult.join(',')),
+                          content: Text(result.toString()),
                         );
                       });
                 }),
