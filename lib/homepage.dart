@@ -8,33 +8,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController inputFirst = TextEditingController();
+  TextEditingController inputSecond = TextEditingController();
 
-  final inputFirst = TextEditingController();
-  final inputSecond = TextEditingController();
+  List<int> finalResult = [];
+  int f1=0 , f2=1, f3=1;
+  double result =0;
 
-  String? text = '';
+  String? fibonacciSeries() {
+    int firstRange = int.parse(inputFirst.text.toString());
+    int lastRange = int.parse(inputSecond.text.toString());
 
-  String? fibonacciSeries(){
-    int start = int.parse(inputFirst.text.toString());
-    int end = int.parse(inputSecond.text.toString());
-    int next ;
-    var c;
 
-    if(start <= end) {
-      for (int i = start; i <= end; i++) {
-        if( c <= 1) {
-          next = c;
-        } else{
-          next = start + end;
-          start = end;
-          end = next;
+    if (firstRange < lastRange) {
+      while(f1 <= lastRange){
+        if(f1 >= firstRange){
+          result++;
+          f1 = f2;
+          f2 = f3;
+          f3 = f1 + f2;
         }
-      }
-      }
-    return text;
-
+      }throw result;
+    } else {
+      ///todo show a error message.eg. range not valid
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +51,9 @@ class _HomePageState extends State<HomePage> {
                 hintText: ('Enter the first number'),
               ),
             ),
-
             const SizedBox(
               height: 20,
             ),
-
             TextField(
               keyboardType: TextInputType.number,
               controller: inputSecond,
@@ -65,22 +61,21 @@ class _HomePageState extends State<HomePage> {
                 hintText: ('Enter the Second Number'),
               ),
             ),
-
             const SizedBox(
               height: 20,
             ),
-              ElevatedButton(
+            ElevatedButton(
                 child: const Text('Check'),
-                onPressed: (){
+                onPressed: () {
                   fibonacciSeries();
-                  showDialog(context: context,
-                      builder: (context){
-                    return AlertDialog(
-                      title: const Text('Fibonacci Series'),
-                      content: Text(text!),
-
-                    );
-                  });
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Fibonacci Series'),
+                          content: Text(finalResult.join(',')),
+                        );
+                      });
                 }),
           ],
         ),
